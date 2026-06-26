@@ -123,7 +123,7 @@ export default function Home() {
         <Contact />
 
         <footer>
-          <div className="foot-logo">[codertheashish] // Ashish Kumar Prajapati // Lucknow, India</div>
+          <div className="foot-logo">codertheashish // Ashish Kumar Prajapati // Lucknow, India</div>
           <div className="foot-text">© 2026 · Built with Python mindset · All systems operational</div>
           <button className="back-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑ Back to Top</button>
         </footer>
