@@ -53,10 +53,18 @@ export default function Home() {
   /* ── scroll animations ── */
   useEffect(() => {
     if (!entered) return
-    const els = document.querySelectorAll('.anim')
-    const io  = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('in') }), { threshold: 0.1 })
-    els.forEach(el => io.observe(el))
-    return () => io.disconnect()
+    // Small delay taaki DOM fully render ho jaye
+    const timer = setTimeout(() => {
+      const els = document.querySelectorAll('.anim')
+      const io  = new IntersectionObserver(e => e.forEach(x => {
+        if (x.isIntersecting) {
+          x.target.classList.add('in')
+          io.unobserve(x.target)
+        }
+      }), { threshold: 0.05, rootMargin: '0px 0px -20px 0px' })
+      els.forEach(el => io.observe(el))
+    }, 100)
+    return () => clearTimeout(timer)
   }, [entered])
 
   /* ── counter animation ── */
