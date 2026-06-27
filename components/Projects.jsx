@@ -22,15 +22,14 @@ const filters = [
 
 export default function Projects() {
   const [active, setActive] = useState('all')
-  const visible = projects.filter(p => active === 'all' || p.cat === active)
 
   return (
     <section id="projects">
-      <div className="sec-tag anim">mission logs</div>
-      <h2 className="sec-title anim">What I&apos;ve Built</h2>
-      <div className="sec-line anim" />
+      <div className="sec-tag anim in">mission logs</div>
+      <h2 className="sec-title anim in">What I&apos;ve Built</h2>
+      <div className="sec-line anim in" />
 
-      <div className="proj-filter anim">
+      <div className="proj-filter anim in">
         {filters.map(f => (
           <button
             key={f.cat}
@@ -43,10 +42,11 @@ export default function Projects() {
       </div>
 
       <div className="proj-grid">
-        {visible.map((p, i) => (
+        {projects.map((p) => (
           <div
             key={p.num}
-            className={`proj-card anim${i % 3 > 0 ? ` anim-d${i % 3}` : ''}`}
+            className="proj-card in"
+            style={{ display: (active === 'all' || p.cat === active) ? 'block' : 'none' }}
             onClick={() => window.open(p.link, '_blank')}
           >
             <div className="proj-num">// {p.num}</div>
@@ -61,7 +61,7 @@ export default function Projects() {
         ))}
       </div>
 
-      <div className="proj-more-wrap anim">
+      <div className="proj-more-wrap anim in">
         <a
           className="btn-repos"
           href="https://github.com/codertheashish?tab=repositories"
