@@ -1,12 +1,12 @@
 const certs = [
-  { ico:'☁️', name:'Generative AI Foundations',      org:'Amazon Web Services (AWS)',      link:'YOUR_AWS_CERT_LINK_HERE' },
-  { ico:'🐍', name:'Python 101 for Data Science',    org:'Cognitive Class — IBM',           link:'YOUR_IBM_CERT_LINK_HERE' },
-  { ico:'🤖', name:'AI Appreciate + AI Aware',        org:'AI Student Community · 2 Badges', link:'YOUR_AI_COMMUNITY_CERT_LINK_HERE' },
-  { ico:'🛡️', name:'Cybersecurity Analyst Simulation',org:'IAA via Forage',                 link:'YOUR_FORAGE_CERT_LINK_HERE' },
-  { ico:'📊', name:'Power BI & MS Excel Mastery',     org:'Simplilearn / Office Master',    link:'YOUR_POWERBI_CERT_LINK_HERE' },
-  { ico:'🤝', name:'Professional Networking',         org:'HP LIFE',                        link:'YOUR_HPLIFE_CERT_LINK_HERE' },
-  { ico:'🏆', name:'Hackathon Participation',         org:'SRIMT Hackathon',                link:'YOUR_HACKATHON_CERT_LINK_HERE' },
-  { ico:'💻', name:'C Programming Fundamentals',      org:'Simplilearn',                    link:'YOUR_C_CERT_LINK_HERE' },
+  { ico:'☁️', name:'Generative AI Foundations',      org:'Amazon Web Services (AWS)',      link:'/certificates/aws_gen_ai.jpg' },
+  { ico:'🐍', name:'Python 101 for Data Science',    org:'Cognitive Class — IBM',           link:'/certificates/python101.jpg' },
+  { ico:'🤖', name:'AI Appreciate + AI Aware',        org:'AI Student Appreciate ',         link:'/certificates/ai-appreciate.jpg' },
+  { ico:'🛡️', name:'Cybersecurity Analyst Simulation',org:'IAA via Forage',                 link:'/certificates/cybersecurity-analyst.jpg' },
+  { ico:'📊', name:'Power BI & MS Excel Mastery',     org:'Simplilearn / Office Master',    link:'/certificates/ms-excel.jpg' },
+  { ico:'🤝', name:'Professional Networking',         org:'HP LIFE',                        link:'/certificates/hp-life.jpg' },
+  { ico:'🏆', name:'Hackathon Participation',         org:'SRIMT Hackathon',                link:'/certificates/hackathon_in_srimt.jpg' },
+  { ico:'💻', name:'C Programming Fundamentals',      org:'Simplilearn',                    link:'/certificates/c-programming-basics.jpg' },
 ]
 
 export default function Certs() {
