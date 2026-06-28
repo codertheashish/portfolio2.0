@@ -52,7 +52,7 @@ export default function Projects() {
             {/* Project Image */}
             <div style={{
               width: '100%',
-              height: '200px',
+              height: '220px',
               overflow: 'hidden',
               borderBottom: '1px solid rgba(0,255,136,0.1)',
               background: '#020a0f',
