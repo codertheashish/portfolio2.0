@@ -189,3 +189,5 @@ This project is licensed under the MIT License.
 ---
 
 ⭐ If you like this portfolio, don't forget to give it a star on GitHub.
+
+<img width="1536" height="1024" alt="Portfoilio2 0" src="https://github.com/user-attachments/assets/93f1b3ee-b836-49cb-adcf-6596f7da796b" />
