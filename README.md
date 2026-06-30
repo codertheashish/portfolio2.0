@@ -1,10 +1,50 @@
 # Ashish Kumar Prajapati — Portfolio (Next.js)
 
-Dark cyber-themed portfolio converted from HTML to Next.js 14 App Router.
+A modern, responsive, and interactive developer portfolio built using HTML, CSS, and JavaScript.
+This portfolio showcases my projects, certifications, technical skills, education, and experience with smooth animations, a clean UI, and responsive design.
 
 ---
 
-## 📁 Folder Structure
+## 🌐 Live Demo
+
+```text
+https://codertheashish.vercel.app/
+```
+
+---
+
+## ✨ Features
+
+- 🎨 Modern Glassmorphism UI
+- 📱 Fully Responsive Design
+- ⚡ Smooth Scroll Animations
+- 👨‍💻 Hero Section with Typing Effect
+- 📖 About Section
+- 🎓 Education Timeline
+- 💼 Experience Section
+- 🚀 Featured Projects
+- 📜 Certifications Gallery
+- 🛠️ Technical Skills
+- 📞 Contact Section
+- 🌌 Animated Background Effects
+- 🔥 Scroll Reveal Animation
+- 🧭 Active Navigation Highlight
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| HTML5 | Website Structure |
+| CSS3 | Styling & Animations |
+| JavaScript (ES6) | Interactivity |
+| Google Fonts | Typography |
+| GitHub Pages | Deployment |
+
+---
+
+## 📂 Project Structure
 
 ```
 ashish-portfolio/
@@ -27,76 +67,125 @@ ashish-portfolio/
 ├── next.config.js
 └── README.md
 ```
+---
+
+## 📥 Clone Repository
+
+```bash
+https://github.com/codertheashish/portfolio2.o
+```
 
 ---
 
-## 🚀 Run Locally (Step by Step)
+## 🚀 Run Locally
 
-### Step 1 — Node.js install karo
-Download from: https://nodejs.org (LTS version)
+Simply open
 
-Check karo:
-```bash
-node -v   # 18.0+ hona chahiye
-npm -v
+```text
+index.html
 ```
 
-### Step 2 — Project folder mein jao
+or run a local server
+
 ```bash
-cd ashish-portfolio
+python -m http.server 8080
 ```
 
-### Step 3 — Dependencies install karo
-```bash
-npm install
-```
+Then visit
 
-### Step 4 — Dev server start karo
-```bash
-npm run dev
+```text
+http://localhost:8080
 ```
-
-Browser mein open karo: **http://localhost:3000**
 
 ---
 
-## 🌐 Deploy on Vercel (FREE — Recommended)
+## 📄 Sections Included
 
-### Option A — Vercel CLI
-```bash
-npm install -g vercel
-vercel
-```
-Pehli baar GitHub se login karega → auto deploy!
-
-### Option B — Vercel Website
-1. GitHub pe push karo: `git push`
-2. https://vercel.com pe jao
-3. "Import Project" → GitHub repo select karo
-4. Deploy button dabao ✅
+- 🏠 Hero
+- 👨 About
+- 🎓 Education
+- 💼 Experience
+- 🚀 Projects
+- 📜 Certifications
+- 🛠 Skills
+- 📞 Contact
 
 ---
 
-## 🔧 Customization
+## 🚀 Featured Projects
 
-### Certificate links update karo
-`components/Certs.jsx` open karo → `link` field mein apni actual links daalo:
-```js
-{ link: 'YOUR_AWS_CERT_LINK_HERE' }  // ← yahan real link daalo
-```
-
-### Resume update karo
-`public/` folder mein `Ashish_Resume.pdf` daalo.
+- ✍️ AI Air Writing
+- 🤖 ARC Chatbot
+- 👁️ Emotion Detection
+- 🧥 Invisible Cloth
+- 🧮 Calculator App
+- 🎂 Happy Birthday Website
 
 ---
 
-## ⚡ What's Different from HTML Version
+## 📜 Certifications
 
-| Feature | HTML | Next.js |
-|---------|------|---------|
-| SEO Metadata | ❌ Basic | ✅ Full Open Graph |
-| Google Fonts | CDN link | ✅ next/font (faster) |
-| Components | Single file | ✅ Separate files |
-| State Management | Global JS vars | ✅ React useState |
-| Deployment | Manual | ✅ Auto with Vercel |
-| Performance | Good | ✅ Better (SSG) |
+- AWS Generative AI Foundations
+- IBM Python 101
+- HP LIFE
+- Cybersecurity Analyst
+- Power BI Workshop
+- C Programming
+- AI Badges
+- Hackathon Participation
+
+---
+
+## 🎨 UI Highlights
+
+- Glassmorphism Design
+- Gradient Effects
+- Typing Animation
+- Animated Background Orbs
+- Scroll Reveal
+- Responsive Navigation
+- Interactive Buttons
+- Smooth Hover Effects
+
+---
+
+## 📱 Responsive Design
+
+Optimized for
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile Devices
+
+---
+
+## 🔮 Future Improvements
+
+- Dark / Light Mode
+- Blog Section
+- Contact Form
+- Project Filtering
+- Multi-language Support
+- Visitor Counter
+- Admin Dashboard
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+### Ashish Kumar Prajapati
+
+- GitHub: https://github.com/codertheashish
+- LinkedIn: https://www.linkedin.com/in/ashish-kumar-prajapati-3b6858301
+- Email: codertheashish@gmail.com
+
+---
+
+⭐ If you like this portfolio, don't forget to give it a star on GitHub.
