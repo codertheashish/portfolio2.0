@@ -102,7 +102,7 @@ export default function Projects() {
           rel="noreferrer"
         >
           View All Repositories
-          <span className="btn-repos-count">18 REPOS ↗</span>
+          <span className="btn-repos-count">32 REPOS ↗</span>
         </a>
       </div>
     </section>
