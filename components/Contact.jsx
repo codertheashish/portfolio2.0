@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 const socials = [
-  { icon:'⌥', label:'GITHUB',    val:'github.com/codertheashish',          href:'https://github.com/codertheashish' },
+  { icon:'⌥', label:'GITHUB',    val:'codertheashish',          href:'https://github.com/codertheashish' },
   { icon:'in', label:'LINKEDIN',  val:'codertheashish',                     href:'https://www.linkedin.com/in/codertheashish' },
   { icon:'@',  label:'EMAIL',     val:'codertheashish@gmail.com',           href:'mailto:codertheashish@gmail.com' },
   { icon:'◉',  label:'INSTAGRAM', val:'@codertheashish',                    href:'https://www.instagram.com/codertheashish' },
