@@ -1,102 +1,87 @@
-'use client'
-import { useState } from 'react'
+'use client';
+// components/Certs.jsx
+// ================================================================
+// Dynamic Certificates — Google Sheets se load hota hai
+// ================================================================
 
-const certs = [
-  { ico:'🤖', name:'Generative AI Foundations',        org:'Amazon Web Services (AWS) · 2 Badges', multi:[{ label:'Generative AI', link:'/certificates/aws_gen_ai.jpg'},{ label:'Generative AI Badge', link:'/certificates/generative Ai.jpg'}]},
-  { ico:'🐍', name:'Python 101 for Data Science',      org:'Cognitive Class — IBM',                link:'/certificates/python101.jpg' },
-  { ico:'🤖', name:'AI Appreciate + AI Aware',         org:'AI Student Community · 2 Badges',      multi:[{ label:'AI Appreciate', link:'/certificates/ai-appreciate.jpg'},{ label:'AI Aware', link:'/certificates/ai-aware.jpg'}]},
-  { ico:'🛡️', name:'Cybersecurity Analyst Simulation', org:'IAA via Forage',                       link:'/certificates/cybersecurity-analyst.jpg' },
-  { ico:'📊', name:'MS Excel Mastery',                 org:'Simplilearn',                          link:'/certificates/ms-excel.jpg' },
-  { ico:'📊', name:'Power BI',                         org:'Office Master',                        link:'/certificates/power-bi-workshop.jpg' },
-  { ico:'🤝', name:'Professional Networking',          org:'HP LIFE',                              link:'/certificates/hp-life.jpg' },
-  { ico:'🏆', name:'Hackathon Participation',          org:'SRIMT Hackathon',                      link:'/certificates/hackathon_in_srimt.jpg' },
-  { ico:'💻', name:'C Programming Fundamentals',       org:'Simplilearn',                          link:'/certificates/c-programming-basics.jpg' },
-]
+import { useState, useEffect } from 'react';
+import { DEFAULT_CERTS } from '../lib/defaultData';
 
 export default function Certs() {
-  const [popup, setPopup] = useState(null)
+  const [certs, setCerts] = useState(DEFAULT_CERTS);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res  = await fetch('/api/sheets?action=getCerts');
+        const json = await res.json();
+        if (json.status === 'ok' && json.data?.length) {
+          setCerts(json.data);
+        }
+      } catch { /* use defaults */ }
+    }
+    load();
+  }, []);
+
+  // Admin se instant update
+  useEffect(() => {
+    const handler = (e) => { if (e.detail?.certs) setCerts(e.detail.certs); };
+    window.addEventListener('portfolioCertsUpdated', handler);
+    return () => window.removeEventListener('portfolioCertsUpdated', handler);
+  }, []);
 
   return (
-    <section id="certs">
-      <div className="sec-tag anim">verified credentials</div>
-      <h2 className="sec-title anim">Certifications</h2>
-      <div className="sec-line anim" />
-
-      <div className="certs-grid">
-        {certs.map((c, i) => (
-          <div
-            key={i}
-            className="cert-card"
-            style={{ cursor:'pointer', opacity:1, transform:'none' }}
-            onClick={() => {
-              if (c.multi) {
-                setPopup(c.multi)
-              } else {
-                window.open(c.link, '_blank')
-              }
-            }}
-          >
-            <div className="cert-ico">{c.ico}</div>
-            <div>
-              <div className="cert-name">{c.name}</div>
-              <div className="cert-org">{c.org}</div>
-              <div className="cert-badge">VIEW CERTIFICATE</div>
-            </div>
-          </div>
-        ))}
+    <section id="certs" style={{ padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,5vw,4rem)', maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', letterSpacing: '4px', color: '#00d4ff', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <span style={{ color: '#4a7a8a' }}>//</span> verified credentials
       </div>
+      <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.8rem)', fontWeight: 700, color: '#e8f8ff', letterSpacing: '-1px', marginBottom: '8px' }}>
+        Certifications
+      </h2>
+      <div style={{ width: '36px', height: '2px', background: '#00ff88', marginBottom: 'clamp(2rem,4vw,3rem)', boxShadow: '0 0 8px #00ff88' }} />
 
-      {/* POPUP */}
-      {popup && (
-        <div
-          onClick={() => setPopup(null)}
-          style={{
-            position:'fixed', inset:0,
-            background:'rgba(0,0,0,0.9)',
-            zIndex:9999,
-            display:'flex',
-            flexDirection:'column',
-            alignItems:'center',
-            justifyContent:'center',
-            gap:'1.5rem',
-            padding:'2rem'
-          }}
-        >
-          <p style={{fontFamily:'monospace', fontSize:11, letterSpacing:3, color:'#4a7a8a'}}>
-            CLICK ANYWHERE TO CLOSE
-          </p>
-          <div style={{display:'flex', gap:'1.5rem', flexWrap:'wrap', justifyContent:'center'}}>
-            {popup.map((item, i) => (
-              <a
-                key={i}
-                href={item.link}
-                target="_blank"
-                rel="noreferrer"
-                onClick={e => e.stopPropagation()}
-                style={{
-                  display:'flex', flexDirection:'column', alignItems:'center',
-                  gap:'0.75rem', border:'1px solid rgba(0,255,136,0.25)',
-                  padding:'1.25rem', background:'#041018',
-                  textDecoration:'none', cursor:'pointer'
-                }}
-              >
-                <img
-                  src={item.link}
-                  alt={item.label}
-                  style={{width:220, height:'auto', border:'1px solid rgba(0,255,136,0.1)'}}
-                  onError={e => { e.target.style.display='none' }}
-                />
-                <span style={{
-                  fontFamily:'monospace', fontSize:11, letterSpacing:2,
-                  color:'#00ff88'
-                }}>
-                  ↗ {item.label}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(250px,1fr))', gap: '1px', background: 'rgba(0,255,136,.1)' }}>
+        {certs.map((c, i) => <CertCard key={c.name + i} cert={c} />)}
+      </div>
     </section>
-  )
+  );
+}
+
+function CertCard({ cert: c }) {
+  const [hovered, setHovered] = useState(false);
+  const isClickable = c.certUrl && !c.certUrl.includes('YOUR_') && c.certUrl.startsWith('http');
+
+  const inner = (
+    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? '#071825' : '#041018',
+        padding: '1.25rem', display: 'flex', gap: '12px', alignItems: 'flex-start',
+        transition: 'background .2s', position: 'relative', overflow: 'hidden', height: '100%',
+      }}>
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '1px',
+        background: '#00ff88', transform: hovered ? 'scaleX(1)' : 'scaleX(0)',
+        transformOrigin: 'left', transition: 'transform .3s',
+      }} />
+      <div style={{
+        width: '38px', height: '38px', minWidth: '38px',
+        background: 'rgba(0,255,136,.07)', border: `1px solid ${hovered ? 'rgba(0,255,136,.25)' : 'rgba(0,255,136,.1)'}`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '17px', transition: 'border-color .2s',
+      }}>
+        {c.emoji || '📜'}
+      </div>
+      <div>
+        <div style={{ fontSize: '12px', fontWeight: 500, color: '#e8f8ff', marginBottom: '4px', lineHeight: 1.4 }}>{c.name}</div>
+        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', color: '#4a7a8a', marginBottom: '6px' }}>{c.org}</div>
+        {isClickable
+          ? <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '9px', letterSpacing: '1.5px', color: '#00ff88', display: 'inline-flex', alignItems: 'center', gap: hovered ? '6px' : '4px', transition: 'gap .2s' }}>↗ VIEW CERTIFICATE</div>
+          : <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '9px', color: '#4a7a8a' }}>LINK PENDING</div>
+        }
+      </div>
+    </div>
+  );
+
+  return isClickable
+    ? <a href={c.certUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', display: 'block' }}>{inner}</a>
+    : <div style={{ display: 'block' }}>{inner}</div>;
 }
