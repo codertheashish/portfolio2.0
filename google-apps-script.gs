@@ -1,9 +1,9 @@
 // ================================================================
 // GOOGLE APPS SCRIPT — Portfolio2.0
-// Extensions → Apps Script → paste karo → Deploy as Web App
+// Extensions → Apps Script → Paste Here → Deploy as Web App
 // ================================================================
 
-const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE'; // Replace karo
+const SHEET_ID = '1whpXGOdzVsajknk3vkVqxfb0oyJwt_B9WB2_V8NBijc'; 
 
 function doGet(e) {
   const action = e.parameter.action;

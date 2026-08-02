@@ -1,12 +1,12 @@
 // app/api/sheets/route.js
 // ================================================================
-// Next.js API Route — Google Sheets se Projects + Certs fetch karo
-// Yeh file Next.js server pe run hoti hai — SHEET_URL safe rehta hai
+// Next.js API Route — Google Sheets to Projects + Certs fetched
+// This file is run on the server of Next.js — SHEET_URL are safed
 // ================================================================
 
 import { NextResponse } from 'next/server';
 
-// .env.local mein daalo: SHEET_URL=https://script.google.com/...
+// .env.local is placed: SHEET_URL=https://script.google.com/...
 const SHEET_URL = process.env.SHEET_URL || '';
 
 // ── GET /api/sheets?action=getProjects | getCerts ──────────────

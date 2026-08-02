@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { DEFAULT_PROJECTS, DEFAULT_CERTS } from '../lib/defaultData';
 
 const PW_KEY = 'portfolio_admin_pw';
-const DEFAULT_PW = 'ashish@admin2026';
+const DEFAULT_PW = 'codertheashish';
 const getStoredPw = () => typeof window !== 'undefined' ? (localStorage.getItem(PW_KEY) || DEFAULT_PW) : DEFAULT_PW;
 
 export default function AdminPanel() {
@@ -207,7 +207,7 @@ function SettingsTab({ onReload, sheetOk }) {
       <button onClick={onReload} style={{...S.btn, background:'transparent', border:'1px solid rgba(0,255,136,.25)', color:'#00ff88'}}>↻ TEST CONNECTION</button>
 
       <SectionTitle style={{marginTop:'2rem'}}>// CHANGE ADMIN PASSWORD</SectionTitle>
-      <Note text={<>Current default: <b style={{color:'#00d4ff'}}>ashish@admin2026</b> — change karo jaldi!</>} />
+      <Note text={<>Current default: <b style={{color:'#00d4ff'}}>codertheashish</b></>} />
       <div style={S.grid2}>
         <Field label="CURRENT PASSWORD"><Inp type="password" value={curPw} onChange={v=>setCurPw(v)} ph="••••••••" /></Field>
         <Field label="NEW PASSWORD"><Inp type="password" value={newPw} onChange={v=>setNewPw(v)} ph="••••••••" /></Field>
