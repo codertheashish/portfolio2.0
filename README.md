@@ -47,25 +47,27 @@ https://codertheashish.vercel.app/
 ## 📂 Project Structure
 
 ```
-ashish-portfolio/
+portfolio2.0/
 ├── app/
-│   ├── layout.js        ← Root layout + Google Fonts + SEO metadata
-│   ├── page.js          ← Main page (orchestrates all components)
-│   └── globals.css      ← All CSS (same styles as original)
+│   ├── admin/page.js
+│   ├── api/sheets/route.js
+│   ├── layout.js
+│   ├── page.js
+│   ├── globals.css
+│   └── route.js 
 ├── components/
-│   ├── Intro.jsx        ← Loading screen with particle canvas
-│   ├── Navbar.jsx       ← Fixed navbar with mobile hamburger
-│   ├── Hero.jsx         ← Hero section with typing animation
-│   ├── About.jsx        ← About + info cards
-│   ├── Skills.jsx       ← Skills grid + animated progress bars
-│   ├── Experience.jsx   ← Timeline (internship + education)
-│   ├── Projects.jsx     ← Project cards with filter
-│   ├── Certs.jsx        ← Certifications grid
-│   └── Contact.jsx      ← Contact form + social links
-├── public/              ← Put your resume PDF here
-├── package.json
-├── next.config.js
-└── README.md
+│   ├── About.jsx
+│   ├── AdminPanel.jsx  
+│   ├── Certs.jsx
+│   ├── Contact.jsx
+│   ├── Experience.jsx
+│   ├── Hero.jsx
+│   ├── Intro.jsx
+│   ├── Navbar.jsx
+│   ├── Projects.jsx
+│   └── Skills.jsx
+├── lib/
+    └── defaultData.js
 ```
 ---
 
@@ -182,10 +184,12 @@ This project is licensed under the MIT License.
 
 ### Ashish Kumar Prajapati
 
-- GitHub: https://github.com/codertheashish
-- LinkedIn: https://www.linkedin.com/in/ashish-kumar-prajapati-3b6858301
-- Email: codertheashish@gmail.com
-
+- GitHub:
+[codertheashish](https://github.com/codertheashish)
+- Linkedin :
+[codertheashish](https://www.linkedin.com/in/codertheashish/)
+- Instagram :
+[codertheashish](https://www.instagram.com/codertheashish/)
 ---
 
 ⭐ If you like this portfolio, don't forget to give it a star on GitHub.
