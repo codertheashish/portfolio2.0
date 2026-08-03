@@ -60,7 +60,7 @@ export default function Hero() {
           <div className="hero-actions anim anim-d3">
             <a className="btn btn-neon" href="#projects">View Projects ↓</a>
             <a className="btn btn-ghost" href="#contact">Get in Touch →</a>
-            <a className="btn btn-ghost" href="https://codertheashish.github.io/portfolio/resume/Ashish_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a>
+            <a className="btn btn-ghost" href="/resume/Ashish_Kumar_Prajapati_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a>
           </div>
           <div className="hero-stats anim anim-d4">
             {stats.map(s => (
