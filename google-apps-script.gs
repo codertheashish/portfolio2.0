@@ -67,6 +67,9 @@ function route_(action, p) {
     case 'sessionVersion':  return { status: 'ok', ver: getState_().sessVer || 1 };
     case 'securityInfo':    return securityInfo_();
     case 'changePassword':  return changePassword_(p);
+    case 'resetRequest':    return resetRequest_(p);
+    case 'resetPeek':       return resetPeek_(p.token);
+    case 'resetApply':      return resetApply_(p);
     case 'approvalPeek':    return approvalPeek_(p.token);
     case 'approval':        return approval_(p);
     case 'logout':          log_('LOGOUT', '', p); return { status: 'ok' };
@@ -387,4 +390,80 @@ function coll_(action, d) {
     return { status: 'ok', message: 'Moved' };
   }
   return { status: 'error', message: 'Unknown action' };
+}
+
+// ── forgot password: reset by e-mail link (owner's Gmail is the root of trust) ──
+const RESET_TTL_MS = 30 * 60 * 1000;        // reset link validity
+const RESET_COOLDOWN_MS = 5 * 60 * 1000;    // at most one reset e-mail per 5 minutes
+
+// Always answers "ok" to the website so an attacker learns nothing.
+function resetRequest_(p) {
+  const now = Date.now(), st = getState_();
+  if (st.lastResetReq && now - st.lastResetReq < RESET_COOLDOWN_MS) return { status: 'ok' };
+  const token = String(p.resetToken || ''), site = String(p.siteUrl || '').replace(/\/+$/, '');
+  if (token.length < 32 || !site) return { status: 'ok' };
+  st.lastResetReq = now; st.resetHash = sha256hex_(token); st.resetExp = now + RESET_TTL_MS;
+  saveState_(st);
+  log_('RESET_REQUESTED', 'password reset e-mail requested', p);
+  try {
+    const link = site + '/admin/reset?t=' + encodeURIComponent(token);
+    MailApp.sendEmail({
+      to: ownerEmail_(), subject: 'Portfolio Admin — Reset password',
+      htmlBody: '<div style="background:#020a0f;padding:28px;font-family:Arial,sans-serif;color:#cfe8f0">' +
+        '<div style="font-family:monospace;color:#00ff88;letter-spacing:3px;font-size:12px">// PASSWORD RESET</div>' +
+        '<h2 style="color:#e8f8ff">Reset your Admin passwords</h2>' +
+        '<p>A password reset was requested for the Portfolio Admin Panel at <b>' + esc_(fmt_(now)) + '</b>.</p>' +
+        '<p><a href="' + link + '" style="display:inline-block;padding:12px 26px;background:#00ff88;color:#000;font-weight:700;letter-spacing:2px;text-decoration:none;font-family:monospace;font-size:13px">RESET PASSWORDS</a></p>' +
+        '<p style="font-size:12px;color:#8aabb8">The link works once and expires in ' + (RESET_TTL_MS / 60000) + ' minutes. You will choose a new Password 1 and Password 2; ' +
+        'every old session is signed out and any lock is cleared. If this was not you, ignore this e-mail — nothing changes.</p></div>',
+      body: 'Reset your Portfolio Admin passwords (valid ' + (RESET_TTL_MS / 60000) + ' min, one use):\n' + link + '\nIf this was not you, ignore this e-mail.'
+    });
+  } catch (e) { log_('EMAIL_FAILED', 'reset mail: ' + String(e).slice(0, 80), p); }
+  return { status: 'ok' };
+}
+function resetValid_(st, token, now) {
+  return !!(st.resetHash && now < st.resetExp && token && safeEqual_(sha256hex_(String(token)), st.resetHash));
+}
+function resetPeek_(token) {
+  return { status: 'ok', valid: resetValid_(getState_(), token, Date.now()) };
+}
+function resetApply_(p) {
+  const now = Date.now(), st = getState_();
+  if (!resetValid_(st, p.token, now)) return { status: 'error', message: 'invalid_or_expired' };
+  const h1 = String(p.hash1 || ''), h2 = String(p.hash2 || '');
+  if (h1.length < 32 || h2.length < 32 || safeEqual_(h1, h2)) return { status: 'error', message: 'bad_new' };
+  props_().setProperty('ADMIN_HASH_1', h1); props_().setProperty('ADMIN_HASH_2', h2);
+  st.resetHash = ''; st.resetExp = 0; st.approvalHash = ''; st.approvalExp = 0;
+  st.attempts = 0; st.lastFail = 0; st.lockUntil = 0; st.unlockUntil = 0;
+  st.sessVer = (st.sessVer || 1) + 1;                  // sign out every existing session
+  saveState_(st);
+  log_('PASSWORD_RESET', 'both passwords reset via e-mail link', p);
+  notify_('Portfolio Admin: passwords were reset',
+    'Both admin passwords were reset at ' + fmt_(now) + ' using the e-mail link. All sessions were signed out and any lock was cleared.');
+  return { status: 'ok' };
+}
+
+// Run this once from the Apps Script editor (function dropdown → testEmail → Run).
+// It authorises Gmail sending and tells you whether alerts can reach OWNER_EMAIL.
+function testEmail() {
+  const to = ownerEmail_();
+  MailApp.sendEmail({ to: to, subject: 'Portfolio Admin — test e-mail', body: 'If you can read this, security alerts and password-reset mails will reach you.' });
+  Logger.log('Test e-mail sent to ' + to + '. Check Inbox AND Spam. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
+}
+
+// ── EMERGENCY / RESET TO FIRST-RUN PASSWORDS ──
+// Run from the Apps Script editor (function dropdown → resetToDefaults → Run).
+// Removes the stored password hashes, so the website's built-in first-run passwords work again,
+// clears any lock / pending approval / reset links, and signs out every session.
+// After logging in with the first-run passwords the panel forces you to choose new ones.
+function resetToDefaults() {
+  props_().deleteProperty('ADMIN_HASH_1');
+  props_().deleteProperty('ADMIN_HASH_2');
+  const st = getState_();
+  st.attempts = 0; st.lastFail = 0; st.lockUntil = 0; st.unlockUntil = 0;
+  st.approvalHash = ''; st.approvalExp = 0; st.resetHash = ''; st.resetExp = 0;
+  st.sessVer = (st.sessVer || 1) + 1;
+  saveState_(st);
+  log_('RESET_DEFAULTS', 'passwords reset to first-run defaults from the script editor', {});
+  Logger.log('Done. Both passwords are back to the first-run defaults and any lock is cleared.');
 }

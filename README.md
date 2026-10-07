@@ -44,6 +44,15 @@ Failing 3 more times re-locks and sends a new e-mail. DENY → stays locked.
 Admin → Security → choose Password 1 or 2; requires current P1 + P2 + new + confirm; min 12 chars; must differ from the other
 password. Signs out all sessions and e-mails you.
 
+## 6b. Forgot password (reset via Gmail)
+Login page → **Forgot password? Reset via Gmail**. A single-use link (valid 30 min, max one mail per 5 min) is sent to `OWNER_EMAIL`.
+It opens `/admin/reset`, where you choose a new Password 1 and Password 2 (12+ chars, different). Every session is signed out and any lock is cleared.
+The website never says whether an e-mail was sent, so nobody can probe the panel.
+
+**E-mails not arriving?** In Apps Script run `testEmail` once (function dropdown → Run → Allow), check Inbox *and Spam*, make sure the
+Script Property `OWNER_EMAIL` is set, then Deploy → Manage deployments → Edit → **New version**. Failures are recorded as `EMAIL_FAILED`
+in the `SecurityLog` tab. Approve/Deny mails are only sent after 3 failed login attempts.
+
 ## 7. Google Sheet
 Tabs: **Projects** `emoji | title | desc | stack | category | githubUrl | num | image | liveUrl(optional)` and
 **Certificates** `emoji | name | org | certUrl | image`. A **SecurityLog** tab is auto-created (time, event, masked IP — no secrets).

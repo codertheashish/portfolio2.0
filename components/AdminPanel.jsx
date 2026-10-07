@@ -284,7 +284,7 @@ function Security({ sec, loadSec }) {
     if (r.ok) { flash('ok', '✓ Changed. Signing you out…'); setTimeout(() => (window.location.href = '/admin'), 1200) }
     else flash('err', '⚠ ' + (r.message || 'Failed') + (r.attemptsLeft != null ? ` (${r.attemptsLeft} attempts left)` : ''))
   }
-  const label = { SUCCESS: 'SUCCESS', FAILED: 'FAILED', LOCKED: 'LOCKED', APPROVED: 'APPROVED', DENIED: 'DENIED', BLOCKED: 'BLOCKED', PW_CHANGED: 'PW CHANGED', LOGOUT: 'LOGOUT', EMAIL_FAILED: 'EMAIL FAILED' }
+  const label = { SUCCESS: 'SUCCESS', FAILED: 'FAILED', LOCKED: 'LOCKED', APPROVED: 'APPROVED', DENIED: 'DENIED', BLOCKED: 'BLOCKED', PW_CHANGED: 'PW CHANGED', RESET_REQUESTED: 'RESET REQUESTED', PASSWORD_RESET: 'PASSWORD RESET', LOGOUT: 'LOGOUT', EMAIL_FAILED: 'EMAIL FAILED' }
   const tone = e => (['SUCCESS', 'APPROVED'].includes(e) ? 'ok' : ['FAILED', 'LOCKED', 'BLOCKED', 'DENIED', 'EMAIL_FAILED'].includes(e) ? 'bad' : 'mid')
 
   return (

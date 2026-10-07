@@ -20,9 +20,19 @@ export default function AdminLogin({ initialLock, configured }) {
   const [msg, setMsg]     = useState('')
   const [lock, setLock]   = useState(initialLock.locked ? initialLock.until : 0)
   const [now, setNow]     = useState(Date.now())
+  const [fp, setFp]       = useState('idle')   // idle | sending | sent
 
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(id) }, [])
   const locked = lock && now < lock
+
+  async function forgot() {
+    setFp('sending'); setMsg('')
+    try {
+      const r = await fetch('/api/admin/forgot', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      const j = await r.json().catch(() => ({}))
+      if (r.ok) setFp('sent'); else { setFp('idle'); setMsg(REASONS[j.message] || 'Could not send the reset e-mail. Try again.') }
+    } catch { setFp('idle'); setMsg('Network error. Try again.') }
+  }
 
   async function submit(e) {
     e.preventDefault()
@@ -70,6 +80,11 @@ export default function AdminLogin({ initialLock, configured }) {
             <button className="adm-btn full" disabled={busy || !pw || !configured}>{busy ? 'VERIFYING…' : step === 1 ? 'CONTINUE →' : 'AUTHENTICATE →'}</button>
           </>
         )}
+        {fp === 'sent'
+          ? <p className="adm-msg ok" role="status">If this panel is set up, a reset link was sent to the owner's Gmail (valid 30 minutes). Check Inbox and Spam.</p>
+          : <button type="button" className="adm-link" style={{ background: 'none', border: 0, cursor: 'pointer', width: '100%' }} disabled={fp === 'sending' || !configured} onClick={forgot}>
+              {fp === 'sending' ? 'Sending…' : 'Forgot password? Reset via Gmail'}
+            </button>}
         <a className="adm-link" href="/">← Back to portfolio</a>
       </form>
     </div>
