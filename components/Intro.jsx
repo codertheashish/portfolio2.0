@@ -81,7 +81,7 @@ export default function Intro({ onEnter }) {
       <div className="intro-ring" />
 
       <div id="intro-content">
-        <div id="intro-label">PORTFOLIO SYSTEM v3.0</div>
+        <div id="intro-label">PORTFOLIO SYSTEM 2.0</div>
         <div id="intro-name">
           <span className="line1">ASHISH KUMAR</span>
           <span className="line2">PRAJAPATI</span>
