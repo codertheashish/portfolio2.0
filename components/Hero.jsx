@@ -50,7 +50,7 @@ export default function Hero() {
         <div>
           <div className="hero-eyebrow anim">SYSTEM ONLINE — LUCKNOW, INDIA</div>
           <h1 className="hero-name anim anim-d1">
-            Ashish Kumar<br /><em>Prajapati</em>
+            <em>Ashish Kumar</em><br /><em>Prajapati</em>
           </h1>
           <div className="hero-role anim anim-d2">
             <span>{typed}</span><span className="blink">|</span>
