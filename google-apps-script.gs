@@ -207,7 +207,12 @@ function sendAlert_(st, token, p, now) {
       body: 'Portfolio Admin Security Alert\n\n3 failed attempts at ' + when + '. Admin locked until ' + until + '.\n' +
         (hasLink ? 'Approve: ' + base + '&d=approve\nDeny: ' + base + '&d=deny\n' : '')
     });
-  } catch (e) { log_('EMAIL_FAILED', String(e).slice(0, 100), p); }
+  } catch (e) { mailFail_('lock alert', e, p); }
+}
+function mailFail_(where, e, p) {
+  const msg = String(e && e.message ? e.message : e).slice(0, 200);
+  try { props_().setProperty('LAST_MAIL_ERROR', new Date().toISOString() + ' · ' + where + ' · ' + msg); } catch (x) {}
+  log_('EMAIL_FAILED', where + ': ' + msg.slice(0, 80), p);
 }
 function notify_(subject, text) {
   try { MailApp.sendEmail({ to: ownerEmail_(), subject: subject, body: text }); } catch (e) {}
@@ -418,7 +423,10 @@ function resetRequest_(p) {
         'every old session is signed out and any lock is cleared. If this was not you, ignore this e-mail — nothing changes.</p></div>',
       body: 'Reset your Portfolio Admin passwords (valid ' + (RESET_TTL_MS / 60000) + ' min, one use):\n' + link + '\nIf this was not you, ignore this e-mail.'
     });
-  } catch (e) { log_('EMAIL_FAILED', 'reset mail: ' + String(e).slice(0, 80), p); }
+  } catch (e) {
+    mailFail_('reset mail', e, p);
+    st.lastResetReq = 0; st.resetHash = ''; st.resetExp = 0; saveState_(st);   // allow an immediate retry
+  }
   return { status: 'ok' };
 }
 function resetValid_(st, token, now) {
@@ -447,8 +455,13 @@ function resetApply_(p) {
 // It authorises Gmail sending and tells you whether alerts can reach OWNER_EMAIL.
 function testEmail() {
   const to = ownerEmail_();
-  MailApp.sendEmail({ to: to, subject: 'Portfolio Admin — test e-mail', body: 'If you can read this, security alerts and password-reset mails will reach you.' });
-  Logger.log('Test e-mail sent to ' + to + '. Check Inbox AND Spam. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
+  try {
+    MailApp.sendEmail({ to: to, subject: 'Portfolio Admin — test e-mail', body: 'If you can read this, security alerts and password-reset mails will reach you.' });
+    Logger.log('OK: test e-mail sent to ' + to + '. Check Inbox AND Spam. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
+  } catch (e) {
+    Logger.log('FAILED: ' + e + '  → click Review permissions / Allow, then run again, then Deploy → New version.');
+    throw e;
+  }
 }
 
 // ── EMERGENCY / RESET TO FIRST-RUN PASSWORDS ──
