@@ -22,6 +22,10 @@ export default function Hero() {
   const [ri, setRi]       = useState(0)
   const [ci, setCi]       = useState(0)
   const [del, setDel]     = useState(false)
+  const [repos, setRepos] = useState(null)       // live public-repo count from GitHub (falls back to 38)
+  useEffect(() => {
+    fetch('/api/github').then(r => r.json()).then(j => { if (Number.isInteger(j.repos)) setRepos(j.repos) }).catch(() => {})
+  }, [])
   const [photoOk, setPhotoOk] = useState(true)   // falls back to a monogram if the photo file is missing
 
   useEffect(() => {
@@ -64,8 +68,10 @@ export default function Hero() {
             <a className="btn btn-ghost" href="/resume/Ashish_Kumar_Prajapati_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a>
           </div>
           <div className="hero-stats anim anim-d4">
-            {stats.map(s => (
-              <div key={s.label}>
+            {stats.map(s0 => {
+              const s = s0.label === 'Repositories' && repos !== null ? { ...s0, num: repos } : s0
+              return (
+              <div key={s.label + (s.label === 'Repositories' ? s.num : '')}>
                 <div
                   className="hstat-num"
                   style={typeof s.num === 'string' ? { fontSize: '1.4rem' } : {}}
@@ -75,7 +81,8 @@ export default function Hero() {
                 </div>
                 <div className="hstat-lbl">{s.label}</div>
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 

@@ -23,7 +23,7 @@
 .adm-dot { width:8px; height:8px; border-radius:50%; background:#00ff88; box-shadow:0 0 10px #00ff88; animation:adm-blink 1.6s infinite; }
 @keyframes adm-blink { 50% { opacity:.3; } }
 .adm-rule { height:1px; background:linear-gradient(90deg,#00ff88,transparent); margin:1rem 0 1.2rem; opacity:.5; }
-.adm-side nav { display:flex; flex-direction:column; gap:4px; flex:1; }
+.adm-navlist { display:flex; flex-direction:column; gap:4px; flex:1; }
 .adm-nav { display:flex; align-items:center; gap:12px; text-align:left; background:transparent; border:1px solid transparent; color:#4a7a8a; padding:11px 12px; font-family:var(--font-mono,monospace); font-size:12px; letter-spacing:1.5px; cursor:pointer; transition:all .2s; text-transform:uppercase; }
 .adm-nav span { width:18px; text-align:center; }
 .adm-nav:hover { color:#e8f8ff; background:rgba(0,255,136,.04); }

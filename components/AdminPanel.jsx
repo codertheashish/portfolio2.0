@@ -51,10 +51,10 @@ export default function AdminPanel({ mustChange = false }) {
       <aside className={'adm-side' + (open ? ' open' : '')}>
         <div className="adm-brand big"><span className="adm-dot" />ADMIN</div>
         <div className="adm-rule" />
-        <nav>
+        <div className="adm-navlist">
           {NAV.map(([k, ic, l]) => <button key={k} disabled={mustChange && k !== 'security'} className={'adm-nav' + (view === k ? ' on' : '')} onClick={() => go(k)}><span>{ic}</span>{l}</button>)}
           <button className="adm-nav out" onClick={logout}><span>⏻</span>Logout</button>
-        </nav>
+        </div>
         <a className="adm-link side" href="/">← Back to portfolio</a>
       </aside>
 
