@@ -11,8 +11,8 @@ const roles = [
 
 const tags  = ['Python','TensorFlow','OpenCV','MediaPipe','Flask','Streamlit','MySQL','Linux']
 const stats = [
-  { num: 38,     label: 'Repositories', isCount: true },
-  { num: 8,      label: 'Certs',        isCount: true },
+  { num: 48,     label: 'Repositories', isCount: true },
+  { num: 12,      label: 'Certs',        isCount: true },
   { num: 'AI/ML',label: 'Specialization'},
   { num: '∞',    label: 'Learning' },
 ]
