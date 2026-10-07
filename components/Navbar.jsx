@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 
-const links = ['about', 'skills', 'experience', 'projects', 'certs', 'contact']
+const links = ['about', 'skills', 'experience', 'education', 'projects', 'certs', 'contact']
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -16,7 +16,7 @@ export default function Navbar() {
 
         <ul className="nav-links">
           {links.map(l => (
-            <li key={l}><a href={`#${l}`}>{l === 'experience' ? 'exp' : l}</a></li>
+            <li key={l}><a href={`#${l}`}>{l === 'experience' ? 'exp' : l === 'education' ? 'edu' : l}</a></li>
           ))}
         </ul>
 

@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata = {
   title: 'Ashish Kumar Prajapati — AI/ML Developer',
-  description: 'B.Tech CSE (AI/ML) @ SRIMT Lucknow. AI Intern @ Techpile Technology. Building intelligent systems with Python, Computer Vision & Machine Learning.',
+  description: 'B.Tech CSE (AI/ML) @ SRIMT Lucknow. Gen AI Intern @ Techpile Technology. Building intelligent systems with Python, Computer Vision & Machine Learning.',
   keywords: ['Python', 'AI', 'ML', 'Computer Vision', 'OpenCV', 'TensorFlow', 'Flask', 'Lucknow'],
   authors: [{ name: 'Ashish Kumar Prajapati' }],
   openGraph: {

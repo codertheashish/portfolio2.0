@@ -1,62 +1,55 @@
 // app/api/sheets/route.js
-// ================================================================
-// Next.js API Route — Google Sheets to Projects + Certs fetched
-// This file is run on the server of Next.js — SHEET_URL are safed
-// ================================================================
+// GET  (public)  → getProjects / getCerts, cached 60s, revalidated after admin edits
+// POST (ADMIN)   → add/update/delete; requires a valid server-side admin session
+import { NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
+import { callScript, guardAdmin, jsonError } from '../../../lib/adminAuth'
+import { cleanProject, cleanCert, cleanDelete } from '../../../lib/validate'
+import { ACTION_RE, NAMES, cleanCollAction } from '../../../lib/collections'
 
-import { NextResponse } from 'next/server';
+const SHEET_URL = () => process.env.SHEET_URL || ''
+const READ = ['getProjects', 'getCerts']
+const WRITE = ['addProject', 'updateProject', 'deleteProject', 'addCert', 'updateCert', 'deleteCert']
 
-// .env.local is placed: SHEET_URL=https://script.google.com/...
-const SHEET_URL = process.env.SHEET_URL || '';
-
-// ── GET /api/sheets?action=getProjects | getCerts ──────────────
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
-
-  if (!SHEET_URL) {
-    return NextResponse.json(
-      { status: 'error', message: 'SHEET_URL not configured in .env.local' },
-      { status: 500 }
-    );
-  }
-
+  const { searchParams } = new URL(request.url)
+  const action = searchParams.get('action')
+  const readOk = READ.includes(action) || (/^get/.test(action || '') && NAMES.includes(action.slice(3)))
+  if (!readOk) return NextResponse.json({ status: 'error', message: 'Unknown action' }, { status: 400 })
+  if (!SHEET_URL()) return NextResponse.json({ status: 'error', message: 'SHEET_URL not configured' }, { status: 500 })
   try {
-    const res = await fetch(`${SHEET_URL}?action=${action}`, {
-      next: { revalidate: 60 }, // 60s cache
-    });
-    const data = await res.json();
-    return NextResponse.json(data);
+    const fresh = searchParams.get('fresh') === '1'
+    const res = await fetch(`${SHEET_URL()}?action=${action}`,
+      fresh ? { cache: 'no-store' } : { next: { revalidate: 60, tags: ['sheet'] } })
+    return NextResponse.json(await res.json())
   } catch (err) {
-    return NextResponse.json(
-      { status: 'error', message: err.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ status: 'error', message: 'Sheet unavailable' }, { status: 502 })
   }
 }
 
-// ── POST /api/sheets  body: { action, data } ──────────────────
 export async function POST(request) {
-  const body = await request.json();
-  const { action, data } = body;
-
-  if (!SHEET_URL) {
-    return NextResponse.json(
-      { status: 'error', message: 'SHEET_URL not configured' },
-      { status: 500 }
-    );
+  const denied = await guardAdmin(request)
+  if (denied) return denied
+  let body
+  try { body = await request.json() } catch { return jsonError(400, 'bad_json') }
+  const { action, data } = body || {}
+  let clean
+  if (typeof action === 'string' && ACTION_RE.test(action)) {
+    const c = cleanCollAction(action, data)
+    if (c.error) return jsonError(400, c.error)
+    clean = { data: c.payload }
+  } else {
+    if (!WRITE.includes(action)) return jsonError(400, 'Unknown action')
+    if (action.startsWith('delete')) clean = cleanDelete(action, data)
+    else clean = action.endsWith('Project') ? cleanProject(data) : cleanCert(data)
+    if (clean.error) return jsonError(400, clean.error)
   }
 
   try {
-    const res = await fetch(
-      `${SHEET_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}`
-    );
-    const result = await res.json();
-    return NextResponse.json(result);
-  } catch (err) {
-    return NextResponse.json(
-      { status: 'error', message: err.message },
-      { status: 500 }
-    );
+    const r = await callScript(action, { data: clean.data })
+    if (r.status === 'ok') revalidateTag('sheet')
+    return NextResponse.json(r, { status: r.status === 'ok' ? 200 : 400, headers: { 'Cache-Control': 'no-store' } })
+  } catch {
+    return jsonError(502, 'Sheet unavailable')
   }
 }

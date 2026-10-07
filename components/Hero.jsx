@@ -22,6 +22,7 @@ export default function Hero() {
   const [ri, setRi]       = useState(0)
   const [ci, setCi]       = useState(0)
   const [del, setDel]     = useState(false)
+  const [photoOk, setPhotoOk] = useState(true)   // falls back to a monogram if the photo file is missing
 
   useEffect(() => {
     const cur = roles[ri]
@@ -51,7 +52,7 @@ export default function Hero() {
             <span>{typed}</span><span className="blink">|</span>
           </div>
           <p className="hero-desc anim anim-d2">
-            B.Tech CSE (AI/ML) @ SRIMT Lucknow. AI Intern @ Techpile Technology.
+            B.Tech CSE (AI/ML) @ SRIMT Lucknow. Gen AI Intern @ Techpile Technology.
             Building intelligent systems with Python, Computer Vision &amp; Machine Learning — turning ideas into code that actually works.
           </p>
           <div className="hero-tags anim anim-d3">
@@ -78,8 +79,31 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* Right column: profile portrait + (existing) terminal */}
+        <div className="hero-visual anim anim-d2">
+          <figure className="profile" aria-label="Portrait of Ashish Kumar Prajapati">
+            <div className="profile-frame">
+              <span className="profile-ring" aria-hidden="true" />
+              <span className="profile-ring r2" aria-hidden="true" />
+              <div className="profile-glass">
+                {photoOk ? (
+                  <img src="/profile/ashish-kumar-prajapati.jpg" alt="Ashish Kumar Prajapati" width="320" height="320"
+                    className="profile-img" fetchPriority="high" onError={() => setPhotoOk(false)} />
+                ) : (
+                  <div className="profile-mono" aria-hidden="true">AP</div>
+                )}
+                <span className="profile-scan" aria-hidden="true" />
+              </div>
+              <span className="profile-corner tl" aria-hidden="true" /><span className="profile-corner br" aria-hidden="true" />
+            </div>
+            <figcaption className="profile-cap">
+              <span className="profile-name">ASHISH KUMAR PRAJAPATI</span>
+              <span className="profile-meta">AI/ML • PYTHON • COMPUTER VISION</span>
+            </figcaption>
+          </figure>
+
         {/* Terminal */}
-        <div className="terminal anim anim-d2">
+        <div className="terminal">
           <div className="term-hdr">
             <div className="dot-r" /><div className="dot-y" /><div className="dot-g" />
             <div className="term-title">dev.profile.py</div>
@@ -108,6 +132,7 @@ export default function Hero() {
             <div>&nbsp;</div>
             <div><span className="ts">✓ Ready.</span><span className="blink"> ▊</span></div>
           </div>
+        </div>
         </div>
       </div>
     </div>

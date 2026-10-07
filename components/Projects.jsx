@@ -168,6 +168,13 @@ function ProjectCard({ project: p, idx }) {
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: hovered ? '10px' : '6px', fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', letterSpacing: '1.5px', color: 'var(--g,#00ff88)', transition: 'gap .2s' }}>
         View on GitHub →
       </div>
+      {p.liveUrl && /^https?:\/\//i.test(p.liveUrl) && (
+        <button type="button"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.liveUrl, '_blank', 'noopener,noreferrer') }}
+          style={{ marginLeft: '14px', fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', letterSpacing: '1.5px', color: 'var(--c,#00d4ff)', background: 'transparent', border: '1px solid rgba(0,212,255,.25)', padding: '3px 10px', cursor: 'pointer' }}>
+          Live ↗
+        </button>
+      )}
     </a>
   );
 }
