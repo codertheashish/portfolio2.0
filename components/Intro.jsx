@@ -31,7 +31,7 @@ export default function Intro({ onEnter }) {
         const o = 0.25 + Math.sin(s.t) * 0.28
         ctx.beginPath()
         ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(0,255,136,${o})`
+        ctx.fillStyle = `rgba(47,143,255,${o})`
         ctx.fill()
       })
       rafId = requestAnimationFrame(draw)

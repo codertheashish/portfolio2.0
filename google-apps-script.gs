@@ -187,7 +187,7 @@ function sendAlert_(st, token, p, now) {
     };
     const html =
       '<div style="background:#020a0f;padding:28px;font-family:Arial,sans-serif;color:#cfe8f0">' +
-      '<div style="font-family:monospace;color:#00ff88;letter-spacing:3px;font-size:12px">// SECURITY ALERT</div>' +
+      '<div style="font-family:monospace;color:#2f8fff;letter-spacing:3px;font-size:12px">// SECURITY ALERT</div>' +
       '<h2 style="color:#e8f8ff;margin:10px 0">Portfolio Admin Security Alert</h2>' +
       '<p>Someone attempted to access the Portfolio Admin Panel.</p>' +
       '<p><b>3 failed authentication attempts</b> were detected.<br>The Admin Panel has been <b>locked for 24 hours</b>.</p>' +
@@ -197,7 +197,7 @@ function sendAlert_(st, token, p, now) {
       '<tr><td>Lock status</td><td style="padding-left:14px">LOCKED until ' + esc_(until) + '</td></tr>' +
       '<tr><td>Request (approx.)</td><td style="padding-left:14px">' + esc_(p.ip || 'unknown') + ' · ' + esc_(String(p.ua || 'unknown').slice(0, 70)) + '</td></tr></table>' +
       (hasLink
-        ? '<p style="margin-top:18px">' + btn(base + '&d=approve', 'APPROVE ACCESS', '#00ff88', '#000') + btn(base + '&d=deny', 'DENY ACCESS', '#ff5f57', '#fff') + '</p>' +
+        ? '<p style="margin-top:18px">' + btn(base + '&d=approve', 'APPROVE ACCESS', '#2f8fff', '#000') + btn(base + '&d=deny', 'DENY ACCESS', '#ff5f57', '#fff') + '</p>' +
           '<p style="font-size:12px;color:#8aabb8">Links are single-use and expire in ' + (APPROVAL_TTL_MS / 60000) + ' minutes. Approving opens a ' +
           (UNLOCK_WINDOW_MS / 60000) + '-minute window with 3 new attempts; <b>both passwords are still required</b>. Denying keeps the lock.</p>'
         : '<p>No approval link could be generated. The lock expires automatically.</p>') +
@@ -207,12 +207,7 @@ function sendAlert_(st, token, p, now) {
       body: 'Portfolio Admin Security Alert\n\n3 failed attempts at ' + when + '. Admin locked until ' + until + '.\n' +
         (hasLink ? 'Approve: ' + base + '&d=approve\nDeny: ' + base + '&d=deny\n' : '')
     });
-  } catch (e) { mailFail_('lock alert', e, p); }
-}
-function mailFail_(where, e, p) {
-  const msg = String(e && e.message ? e.message : e).slice(0, 200);
-  try { props_().setProperty('LAST_MAIL_ERROR', new Date().toISOString() + ' · ' + where + ' · ' + msg); } catch (x) {}
-  log_('EMAIL_FAILED', where + ': ' + msg.slice(0, 80), p);
+  } catch (e) { log_('EMAIL_FAILED', String(e).slice(0, 100), p); }
 }
 function notify_(subject, text) {
   try { MailApp.sendEmail({ to: ownerEmail_(), subject: subject, body: text }); } catch (e) {}
@@ -415,18 +410,15 @@ function resetRequest_(p) {
     MailApp.sendEmail({
       to: ownerEmail_(), subject: 'Portfolio Admin — Reset password',
       htmlBody: '<div style="background:#020a0f;padding:28px;font-family:Arial,sans-serif;color:#cfe8f0">' +
-        '<div style="font-family:monospace;color:#00ff88;letter-spacing:3px;font-size:12px">// PASSWORD RESET</div>' +
+        '<div style="font-family:monospace;color:#2f8fff;letter-spacing:3px;font-size:12px">// PASSWORD RESET</div>' +
         '<h2 style="color:#e8f8ff">Reset your Admin passwords</h2>' +
         '<p>A password reset was requested for the Portfolio Admin Panel at <b>' + esc_(fmt_(now)) + '</b>.</p>' +
-        '<p><a href="' + link + '" style="display:inline-block;padding:12px 26px;background:#00ff88;color:#000;font-weight:700;letter-spacing:2px;text-decoration:none;font-family:monospace;font-size:13px">RESET PASSWORDS</a></p>' +
+        '<p><a href="' + link + '" style="display:inline-block;padding:12px 26px;background:#2f8fff;color:#000;font-weight:700;letter-spacing:2px;text-decoration:none;font-family:monospace;font-size:13px">RESET PASSWORDS</a></p>' +
         '<p style="font-size:12px;color:#8aabb8">The link works once and expires in ' + (RESET_TTL_MS / 60000) + ' minutes. You will choose a new Password 1 and Password 2; ' +
         'every old session is signed out and any lock is cleared. If this was not you, ignore this e-mail — nothing changes.</p></div>',
       body: 'Reset your Portfolio Admin passwords (valid ' + (RESET_TTL_MS / 60000) + ' min, one use):\n' + link + '\nIf this was not you, ignore this e-mail.'
     });
-  } catch (e) {
-    mailFail_('reset mail', e, p);
-    st.lastResetReq = 0; st.resetHash = ''; st.resetExp = 0; saveState_(st);   // allow an immediate retry
-  }
+  } catch (e) { log_('EMAIL_FAILED', 'reset mail: ' + String(e).slice(0, 80), p); }
   return { status: 'ok' };
 }
 function resetValid_(st, token, now) {
@@ -455,13 +447,8 @@ function resetApply_(p) {
 // It authorises Gmail sending and tells you whether alerts can reach OWNER_EMAIL.
 function testEmail() {
   const to = ownerEmail_();
-  try {
-    MailApp.sendEmail({ to: to, subject: 'Portfolio Admin — test e-mail', body: 'If you can read this, security alerts and password-reset mails will reach you.' });
-    Logger.log('OK: test e-mail sent to ' + to + '. Check Inbox AND Spam. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
-  } catch (e) {
-    Logger.log('FAILED: ' + e + '  → click Review permissions / Allow, then run again, then Deploy → New version.');
-    throw e;
-  }
+  MailApp.sendEmail({ to: to, subject: 'Portfolio Admin — test e-mail', body: 'If you can read this, security alerts and password-reset mails will reach you.' });
+  Logger.log('Test e-mail sent to ' + to + '. Check Inbox AND Spam. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
 }
 
 // ── EMERGENCY / RESET TO FIRST-RUN PASSWORDS ──

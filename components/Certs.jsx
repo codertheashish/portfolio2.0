@@ -57,22 +57,22 @@ export default function Certs() {
           <div onClick={e => e.stopPropagation()}
             style={{ position: 'relative', maxWidth: '90vw', maxHeight: '90vh', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '11px', letterSpacing: '3px', color: 'var(--g,#00ff88)' }}>
+              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '11px', letterSpacing: '3px', color: 'var(--g,#2f8fff)' }}>
                 {modal.name}
               </div>
               <button onClick={() => setModal(null)}
-                style={{ background: 'none', border: '1px solid rgba(0,255,136,.2)', color: '#8aabb8', fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', padding: '4px 12px', cursor: 'pointer', letterSpacing: '2px' }}>
+                style={{ background: 'none', border: '1px solid rgba(47,143,255,.2)', color: '#8aabb8', fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', padding: '4px 12px', cursor: 'pointer', letterSpacing: '2px' }}>
                 ✕ CLOSE
               </button>
             </div>
             <img
               src={modal.image}
               alt={modal.name}
-              style={{ maxWidth: '85vw', maxHeight: '80vh', objectFit: 'contain', border: '1px solid rgba(0,255,136,.15)' }}
+              style={{ maxWidth: '85vw', maxHeight: '80vh', objectFit: 'contain', border: '1px solid rgba(47,143,255,.15)' }}
             />
             {modal.certUrl && (
               <a href={modal.certUrl} target="_blank" rel="noreferrer"
-                style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', color: 'var(--g,#00ff88)', letterSpacing: '2px', textDecoration: 'none', textAlign: 'center' }}>
+                style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', color: 'var(--g,#2f8fff)', letterSpacing: '2px', textDecoration: 'none', textAlign: 'center' }}>
                 ↗ VIEW ONLINE
               </a>
             )}
@@ -108,7 +108,7 @@ function CertCard({ cert: c, onView }) {
     >
       <div style={{
         position: 'absolute', top: 0, left: 0, width: '100%', height: '1px',
-        background: 'var(--g,#00ff88)', transform: hovered && isInteractive ? 'scaleX(1)' : 'scaleX(0)',
+        background: 'var(--g,#2f8fff)', transform: hovered && isInteractive ? 'scaleX(1)' : 'scaleX(0)',
         transformOrigin: 'left', transition: 'transform .3s',
       }} />
 
@@ -116,7 +116,7 @@ function CertCard({ cert: c, onView }) {
       {hasImage && (
         <div style={{
           width: '52px', height: '38px', minWidth: '52px', overflow: 'hidden',
-          border: `1px solid ${hovered ? 'rgba(0,255,136,.25)' : 'rgba(0,255,136,.1)'}`,
+          border: `1px solid ${hovered ? 'rgba(47,143,255,.25)' : 'rgba(47,143,255,.1)'}`,
           background: '#020a0f', transition: 'border-color .2s', flexShrink: 0,
         }}>
           <img src={c.image} alt={c.name}

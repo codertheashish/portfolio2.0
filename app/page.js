@@ -46,7 +46,7 @@ export default function Home() {
     const id = setInterval(() => {
       ctx.fillStyle = 'rgba(0,5,10,.06)'; ctx.fillRect(0, 0, W, H)
       ctx.font = '13px monospace'
-      drops.forEach((d, i) => { ctx.fillStyle = '#00ff88'; ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 18, d * 18); if (d * 18 > H && Math.random() > 0.975) drops[i] = 0; drops[i]++ })
+      drops.forEach((d, i) => { ctx.fillStyle = '#2f8fff'; ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 18, d * 18); if (d * 18 > H && Math.random() > 0.975) drops[i] = 0; drops[i]++ })
     }, 60)
     return () => { clearInterval(id); window.removeEventListener('resize', resize) }
   }, [entered])

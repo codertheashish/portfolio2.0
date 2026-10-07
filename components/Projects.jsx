@@ -63,7 +63,7 @@ export default function Projects() {
       <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.8rem)', fontWeight: 700, color: '#e8f8ff', letterSpacing: '-1px', marginBottom: '8px' }}>
         What I&apos;ve Built
       </h2>
-      <div style={{ width: '36px', height: '2px', background: 'var(--g,#00ff88)', marginBottom: 'clamp(2rem,4vw,3rem)', boxShadow: '0 0 8px #00ff88' }} />
+      <div style={{ width: '36px', height: '2px', background: 'var(--g,#2f8fff)', marginBottom: 'clamp(2rem,4vw,3rem)', boxShadow: '0 0 8px #2f8fff' }} />
 
       {/* Filter */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '2rem' }}>
@@ -72,9 +72,9 @@ export default function Projects() {
             onClick={() => setFilter(c.key)}
             style={{
               fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', letterSpacing: '1.5px',
-              padding: '6px 16px', cursor: 'pointer', background: filter === c.key ? 'rgba(0,255,136,.05)' : 'transparent',
-              border: `1px solid ${filter === c.key ? 'var(--g,#00ff88)' : 'rgba(0,255,136,.1)'}`,
-              color: filter === c.key ? 'var(--g,#00ff88)' : '#4a7a8a', transition: 'all .2s',
+              padding: '6px 16px', cursor: 'pointer', background: filter === c.key ? 'rgba(47,143,255,.05)' : 'transparent',
+              border: `1px solid ${filter === c.key ? 'var(--g,#2f8fff)' : 'rgba(47,143,255,.1)'}`,
+              color: filter === c.key ? 'var(--g,#2f8fff)' : '#4a7a8a', transition: 'all .2s',
             }}>
             {c.label}
           </button>
@@ -91,7 +91,7 @@ export default function Projects() {
           No projects in this category. Add via Admin Panel!
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '1.5px', background: 'rgba(0,255,136,.1)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '1.5px', background: 'rgba(47,143,255,.1)' }}>
           {visible.map((p, i) => (
             <ProjectCard key={p.title + i} project={p} idx={i} />
           ))}
@@ -100,20 +100,20 @@ export default function Projects() {
 
       {/* View All */}
       <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
-        <div style={{ flex: 1, height: '1px', background: 'rgba(0,255,136,.1)' }} />
+        <div style={{ flex: 1, height: '1px', background: 'rgba(47,143,255,.1)' }} />
         <a href="https://github.com/codertheashish?tab=repositories" target="_blank" rel="noreferrer"
           style={{
             fontFamily: "'JetBrains Mono',monospace", fontSize: '11px', letterSpacing: '2px',
             padding: '13px 32px', cursor: 'pointer', background: 'transparent',
-            border: '1px solid rgba(0,255,136,.25)', color: 'var(--g,#00ff88)',
+            border: '1px solid rgba(47,143,255,.25)', color: 'var(--g,#2f8fff)',
             display: 'inline-flex', alignItems: 'center', gap: '10px', whiteSpace: 'nowrap', textDecoration: 'none',
           }}>
           ⌥ View All Repositories
-          <span style={{ background: 'rgba(0,255,136,.12)', border: '1px solid rgba(0,255,136,.25)', fontSize: '9px', padding: '2px 8px' }}>
+          <span style={{ background: 'rgba(47,143,255,.12)', border: '1px solid rgba(47,143,255,.25)', fontSize: '9px', padding: '2px 8px' }}>
             GITHUB ↗
           </span>
         </a>
-        <div style={{ flex: 1, height: '1px', background: 'rgba(0,255,136,.1)' }} />
+        <div style={{ flex: 1, height: '1px', background: 'rgba(47,143,255,.1)' }} />
       </div>
     </section>
   );
@@ -136,8 +136,8 @@ function ProjectCard({ project: p, idx }) {
       {/* Top accent bar */}
       <div style={{
         position: 'absolute', top: 0, left: 0, width: '100%', height: '2px',
-        background: 'var(--g,#00ff88)', transform: hovered ? 'scaleX(1)' : 'scaleX(0)',
-        transformOrigin: 'left', transition: 'transform .35s', boxShadow: '0 0 8px #00ff88',
+        background: 'var(--g,#2f8fff)', transform: hovered ? 'scaleX(1)' : 'scaleX(0)',
+        transformOrigin: 'left', transition: 'transform .35s', boxShadow: '0 0 8px #2f8fff',
       }} />
 
       {/* Image */}
@@ -154,18 +154,18 @@ function ProjectCard({ project: p, idx }) {
         // {String(p.num || idx + 1).padStart(2, '0')}
       </div>
       <span style={{ fontSize: '28px', display: 'block', lineHeight: 1, marginBottom: '.75rem' }}>{p.emoji || '📁'}</span>
-      <div style={{ fontSize: '15px', fontWeight: 600, color: hovered ? 'var(--g,#00ff88)' : '#e8f8ff', marginBottom: '.5rem', transition: 'color .2s' }}>
+      <div style={{ fontSize: '15px', fontWeight: 600, color: hovered ? 'var(--g,#2f8fff)' : '#e8f8ff', marginBottom: '.5rem', transition: 'color .2s' }}>
         {p.title}
       </div>
       <div style={{ fontSize: '12px', color: '#4a7a8a', lineHeight: 1.78, marginBottom: '1rem' }}>{p.desc}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '1.25rem' }}>
         {(p.stack || '').split(',').map(s => (
-          <span key={s} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', color: '#4a7a8a', border: '1px solid rgba(0,255,136,.1)', padding: '2px 8px' }}>
+          <span key={s} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', color: '#4a7a8a', border: '1px solid rgba(47,143,255,.1)', padding: '2px 8px' }}>
             {s.trim()}
           </span>
         ))}
       </div>
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: hovered ? '10px' : '6px', fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', letterSpacing: '1.5px', color: 'var(--g,#00ff88)', transition: 'gap .2s' }}>
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: hovered ? '10px' : '6px', fontFamily: "'JetBrains Mono',monospace", fontSize: '10px', letterSpacing: '1.5px', color: 'var(--g,#2f8fff)', transition: 'gap .2s' }}>
         View on GitHub →
       </div>
       {p.liveUrl && /^https?:\/\//i.test(p.liveUrl) && (
